@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    An error has occured
+{% endblock %}
+{% block head %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="item">
+            <h1>
+                Internal Server error !
+            </h1>
+        </div>
+        <div class="item">
+            <h2>
+                {{ exception.getMessage }}
+            </h2>
+        </div>
+        <div class="item">
+            <h3>
+                in 
+                {{ exception.getFile() }}
+                (line 
+                {{ exception.getLine() }}
+                )
+            </h3>
+            <ul>
+                {% for trace in exception.getTrace %}
+                    <li>
+                        File: 
+                        {{ trace.file }}
+                        ::
+                        {{ trace.function }}
+                        Line: 
+                        {{ trace.line }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <p class="trace">
+            {{ trace }}
+        </p>
+    {% endblock %}
+
+    {% block footer %}{% endblock %}
+    
