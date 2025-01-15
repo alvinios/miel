@@ -17,14 +17,14 @@ class Append implements Fork
     private \Traversable $forks;
 
     public function __construct(
-        \Iterator ...$iterators
+        \Iterator ...$iterators,
     ) {
         $this->forks = new \AppendIterator();
         array_walk($iterators, fn (\Iterator $iterator) => $this->forks->append($iterator));
     }
 
     public function route(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): Endpoint|Optional {
         foreach ($this->forks as $route) {
             $solution = $route->route($request);

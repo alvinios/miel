@@ -14,7 +14,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 abstract class Fork implements Endpoint, ForkInterface, Optional
 {
     public function route(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): Endpoint|Optional {
         return $this;
     }
@@ -26,6 +26,6 @@ abstract class Fork implements Endpoint, ForkInterface, Optional
 
     abstract public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface;
 }

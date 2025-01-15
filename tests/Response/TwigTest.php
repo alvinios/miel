@@ -28,7 +28,7 @@ class TwigTest extends TestCase
                 ['city' => 'Rome']
             ))->response(
                 new ServerRequest('/', 'GET'),
-                new HttpFactory()
+                new HttpFactory(), new HttpFactory()
             )->getBody()->getContents()
         );
     }

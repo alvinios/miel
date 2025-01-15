@@ -18,8 +18,8 @@ class Wrap implements Response
     }
 
     public function build(
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return (new Decorators($this->decorators))->response($this->response->build($factory));
+        return (new Decorators($this->decorators))->response($this->response->build($responseFactory, $streamFactory));
     }
 }

@@ -6,7 +6,7 @@ namespace Alvinios\Miel\Tests\Fork;
 
 use Alvinios\Miel\Endpoint\Base;
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Request\WithRegex;
 use Alvinios\Miel\Response\Response;
 use Alvinios\Miel\Response\Text;
@@ -20,9 +20,9 @@ class RegexTest extends TestCase
 {
     public function testTextContentIsReturned(): void
     {
-        $response = (new Routes(
+        $response = (new App(
             new Regex('/', new Text('Some information'))
-        ))->response(new ServerRequest('GET', '/', []), new HttpFactory());
+        ))->response(new ServerRequest('GET', '/', []), new HttpFactory(), new HttpFactory());
 
         $this->assertStringContainsString(
             'Some information',
@@ -32,10 +32,10 @@ class RegexTest extends TestCase
 
     public function testRouteWithRegexGroups(): void
     {
-        $response = (new Routes(
+        $response = (new App(
             new Regex(
                 '/foo/(?P<baz>[\w]+)/(?P<bar>[\w]+)',
-                new class() extends Base {
+                new class extends Base {
                     public function act(ServerRequestInterface|WithRegex $request): Response
                     {
                         return new TextResponse(
@@ -48,7 +48,7 @@ class RegexTest extends TestCase
                     }
                 }
             )
-        ))->response(new ServerRequest('GET', '/foo/first/second'), new HttpFactory());
+        ))->response(new ServerRequest('GET', '/foo/first/second'), new HttpFactory(), new HttpFactory());
 
         $this->assertStringContainsString('second - first', $response->getBody()->getContents());
     }

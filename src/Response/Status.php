@@ -10,7 +10,7 @@ class Status implements Decorator
 {
     public function __construct(
         private readonly int $status,
-        private string $reasonPhrase = ''
+        private string $reasonPhrase = '',
     ) {
     }
 

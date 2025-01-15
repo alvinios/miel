@@ -17,12 +17,12 @@ use Psr\Http\Message\ServerRequestInterface;
 class Api
 {
     public function __construct(
-        private Books $books
+        private Books $books,
     ) {
     }
 
     /**
-     * Books routes.
+     * Books App.
      */
     public function __invoke(): \Iterator
     {

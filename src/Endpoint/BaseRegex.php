@@ -15,9 +15,9 @@ abstract class BaseRegex extends Fork
 {
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $this->act(new WithRegex($request))->build($factory);
+        return $this->act(new WithRegex($request))->build($responseFactory, $streamFactory);
     }
 
     abstract public function act(WithRegex $request): Response;

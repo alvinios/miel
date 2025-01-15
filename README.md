@@ -36,7 +36,7 @@ use GuzzleHttp\Psr7\{HttpFactory,ServerRequest};
 (new Emit())(
     (new Routes(
         new Regex('/', new Text('Hello world!'))
-    ))->response(ServerRequest::fromGlobals(), new HttpFactory())
+    ))->response(ServerRequest::fromGlobals(), new HttpFactory(), new HttpFactory())
 );
 ```
 Cd to your index.php folder and run php local server
@@ -83,7 +83,7 @@ use Psr\Http\Message\ServerRequestInterface;
                 }      
             )
         )
-  ))->response(ServerRequest::fromGlobals(), new HttpFactory())
+  ))->response(ServerRequest::fromGlobals(), new HttpFactory(), new HttpFactory())
 );
 ```
 

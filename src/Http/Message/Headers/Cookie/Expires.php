@@ -7,7 +7,7 @@ namespace Alvinios\Miel\Http\Message\Headers\Cookie;
 class Expires implements OptionInterface
 {
     public function __construct(
-        private \DateTimeImmutable $expires
+        private \DateTimeImmutable $expires,
     ) {
     }
 

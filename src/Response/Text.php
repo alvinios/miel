@@ -11,15 +11,15 @@ use Psr\Http\Message\StreamFactoryInterface;
 class Text extends Base implements Response
 {
     public function __construct(
-        private readonly string $text
+        private readonly string $text,
     ) {
     }
 
     public function build(
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $factory->createResponse(200)
-          ->withBody($factory->createStream($this->text))
+        return $responseFactory->createResponse(200)
+          ->withBody($streamFactory->createStream($this->text))
           ->withHeader('Content-Type', 'text/html');
     }
 }

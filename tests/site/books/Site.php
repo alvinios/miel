@@ -5,19 +5,18 @@ declare(strict_types=1);
 namespace Alvinios\Miel\Tests\Books;
 
 use Alvinios\Miel\Endpoint\Endpoint;
-use Alvinios\Miel\Endpoint\SeeOther;
 use Alvinios\Miel\Endpoint\Wrap;
 use Alvinios\Miel\Fallback\Any;
 use Alvinios\Miel\Fallback\Fallback;
 use Alvinios\Miel\Fallback\Status as FallbackStatus;
 use Alvinios\Miel\Fork\Append;
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Response\Cookie;
 use Alvinios\Miel\Response\Status;
 use Alvinios\Miel\Response\Text;
 use Alvinios\Miel\Response\Twig;
-use Alvinios\Miel\Tests\Books\Book\Api as ApiRoutes;
+use Alvinios\Miel\Tests\Books\Book\Api;
 use Alvinios\Miel\Tests\Books\Book\Books;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -25,26 +24,27 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Twig\Environment;
 
-class App implements Endpoint
+class Site implements Endpoint
 {
     /**
      * Application dependencies.
      */
     public function __construct(
         private Environment $twig,
-        private Books $books
+        private Books $books,
     ) {
     }
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return (new Fallback(
-            new Routes(
+            new App(
                 new Append(
                     $this->routes(),
-                    (new ApiRoutes($this->books))()
+                    (new Api($this->books))()
                 )
             ),
             new FallbackStatus(
@@ -58,11 +58,11 @@ class App implements Endpoint
                 new Text('An error has occured'),
                 new Status(500)
             ))
-        ))->response($request, $factory);
+        ))->response($request, $responseFactory, $streamFactory);
     }
 
     /**
-     * Application routes.
+     * Application App.
      */
     private function routes(): \Iterator
     {
@@ -75,7 +75,5 @@ class App implements Endpoint
                 new Cookie('foo', 'yes')
             ),
         );
-
-        yield new Regex('/bar', new SeeOther('/'));
     }
 }

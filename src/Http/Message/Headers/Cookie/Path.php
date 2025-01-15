@@ -7,7 +7,7 @@ namespace Alvinios\Miel\Http\Message\Headers\Cookie;
 class Path implements OptionInterface
 {
     public function __construct(
-        private string $path
+        private string $path,
     ) {
     }
 

@@ -14,7 +14,7 @@ class Status implements FallbackInterface
 {
     public function __construct(
         private int $status,
-        private Endpoint $endpoint
+        private Endpoint $endpoint,
     ) {
     }
 
@@ -25,8 +25,8 @@ class Status implements FallbackInterface
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $this->endpoint->response($request, $factory);
+        return $this->endpoint->response($request, $responseFactory, $streamFactory);
     }
 }

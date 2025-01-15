@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Alvinios\Miel\Tests\Http;
 
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Http\HttpException;
 use Alvinios\Miel\Response\Text;
 use GuzzleHttp\Psr7\HttpFactory;
@@ -18,11 +18,11 @@ class HttpExceptionTest extends TestCase
     {
         $this->expectException(HttpException::class);
 
-        $response = (new Routes(
+        $response = (new App(
             new Regex('/foo', new Text('Some information'))
         ))->response(
             new ServerRequest('GET', '/bar', []),
-            new HttpFactory()
+            new HttpFactory(), new HttpFactory()
         );
     }
 }

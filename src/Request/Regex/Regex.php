@@ -13,7 +13,7 @@ class Regex implements RegexInterface
 
     public function __construct(
         private string $pattern,
-        private string $subject
+        private string $subject,
     ) {
         $this->match = (preg_match(
             $pattern,

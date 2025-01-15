@@ -17,15 +17,16 @@ class Shield extends Fork
 
     public function __construct(
         private readonly Endpoint $endpoint,
-        MiddlewareInterface ...$middlewares
+        MiddlewareInterface ...$middlewares,
     ) {
         $this->middlewares = $middlewares;
     }
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return (new Unshield($this->endpoint, $factory, ...$this->middlewares))->handle($request);
+        return (new Unshield($this->endpoint, $responseFactory, $streamFactory, ...$this->middlewares))->handle($request);
     }
 }

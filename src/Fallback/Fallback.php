@@ -17,23 +17,23 @@ class Fallback implements Endpoint
 
     public function __construct(
         private Endpoint $endpoint,
-        FallbackInterface ...$fallbacks
+        FallbackInterface ...$fallbacks,
     ) {
         $this->fallbacks = $fallbacks;
     }
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         try {
-            return $this->endpoint->response($request, $factory);
+            return $this->endpoint->response($request, $responseFactory, $streamFactory);
         } catch (\Exception $ex) {
             foreach ($this->fallbacks as $fallback) {
                 if ($fallback->supports($ex)) {
                     return $fallback->response(
                         new WithException($request->withAttribute(\Exception::class, $ex)),
-                        $factory
+                        $responseFactory, $streamFactory
                     );
                 }
             }

@@ -13,13 +13,13 @@ use Psr\Http\Message\StreamFactoryInterface;
 class Files extends Fork
 {
     public function __construct(
-        private readonly string $directory
+        private readonly string $directory,
     ) {
     }
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         if (!is_dir($this->directory)) {
             throw new \InvalidArgumentException(sprintf('%s is not a valid path', $this->directory));
@@ -31,6 +31,6 @@ class Files extends Fork
                 rtrim($this->directory, '/'),
                 ltrim($request->getUri()->getPath(), '/')
             )
-        ))->build($factory);
+        ))->build($responseFactory, $streamFactory);
     }
 }

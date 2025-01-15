@@ -14,6 +14,7 @@ interface Response
      * Generates a PSR-7 response.
      */
     public function build(
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface;
 }

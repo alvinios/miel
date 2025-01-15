@@ -13,7 +13,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 class Any implements FallbackInterface
 {
     public function __construct(
-        private Endpoint $endpoint
+        private Endpoint $endpoint,
     ) {
     }
 
@@ -24,8 +24,8 @@ class Any implements FallbackInterface
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $this->endpoint->response($request, $factory);
+        return $this->endpoint->response($request, $responseFactory, $streamFactory);
     }
 }

@@ -14,9 +14,9 @@ abstract class Base extends Fork
 {
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $this->act($request)->build($factory);
+        return $this->act($request)->build($responseFactory, $streamFactory);
     }
 
     abstract public function act(ServerRequestInterface $request): Response;

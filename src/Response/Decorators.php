@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 class Decorators implements Decorator
 {
     public function __construct(
-        private array $decorators
+        private array $decorators,
     ) {
     }
 

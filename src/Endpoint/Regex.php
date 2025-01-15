@@ -16,17 +16,17 @@ class Regex extends Fork
 {
     public function __construct(
         private Endpoint $origin,
-        private RegexMatcher $regex
+        private RegexMatcher $regex,
     ) {
     }
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return $this->origin->response(
             new WithRegex($request->withAttribute(RegexInterface::class, $this->regex)),
-            $factory
+            $responseFactory, $streamFactory
         );
     }
 }

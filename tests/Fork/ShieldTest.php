@@ -6,7 +6,7 @@ namespace Alvinios\Miel\Tests\Fork;
 
 use Alvinios\Miel\Endpoint\Base;
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Fork\Shield;
 use Alvinios\Miel\Request\WithRegex;
 use Alvinios\Miel\Response\Response;
@@ -28,86 +28,88 @@ class ShieldTest extends TestCase
 {
     public function testDisallowMethodMiddleware(): void
     {
-        $app = new Routes(
+        $app = new App(
             new Shield(
                 new Regex('/foo', new Text('Some content here...')),
-                $this->disallowMethodMiddleware('PATCH', new HttpFactory())
+                $this->disallowMethodMiddleware('PATCH', new HttpFactory(), new HttpFactory())
             )
         );
 
         $this->assertEquals(
             405,
-            $app->response(new ServerRequest('patch', '/foo', []), new HttpFactory())->getStatusCode()
+            $app->response(new ServerRequest('patch', '/foo', []), new HttpFactory(), new HttpFactory())->getStatusCode()
         );
 
         $this->assertEquals(
             200,
-            $app->response(new ServerRequest('get', '/foo', []), new HttpFactory())->getStatusCode()
+            $app->response(new ServerRequest('get', '/foo', []), new HttpFactory(), new HttpFactory())->getStatusCode()
         );
     }
 
     public function testNestedMiddlewares(): void
     {
-        $app = new Routes(
+        $app = new App(
             new Shield(
                 new Shield(
                     new Regex(
                         '/foo/(?P<id>[\d]+)',
-                        new class() extends Base {
+                        new class extends Base {
                             public function act(ServerRequestInterface|WithRegex $request): Response
                             {
                                 return new TextResponse(sprintf('Id is equal to %s', $request->regex()->group('id')));
                             }
                         }
                     ),
-                    $this->disallowMethodMiddleware('PATCH', new HttpFactory())
+                    $this->disallowMethodMiddleware('PATCH', new HttpFactory(), new HttpFactory())
                 ),
-                $this->disallowMethodMiddleware('POST', new HttpFactory()),
+                $this->disallowMethodMiddleware('POST', new HttpFactory(), new HttpFactory()),
                 $this->logPathMiddleware(new NullLogger())
             )
         );
 
         $this->assertEquals(
             405,
-            $app->response(new ServerRequest('patch', '/foo/2', []), new HttpFactory())->getStatusCode()
+            $app->response(new ServerRequest('patch', '/foo/2', []), new HttpFactory(), new HttpFactory())->getStatusCode()
         );
 
         $this->assertEquals(
             405,
-            $app->response(new ServerRequest('post', '/foo/2', []), new HttpFactory())->getStatusCode()
+            $app->response(new ServerRequest('post', '/foo/2', []), new HttpFactory(), new HttpFactory())->getStatusCode()
         );
 
         $this->assertEquals(
             200,
-            $app->response(new ServerRequest('get', '/foo/2', []), new HttpFactory())->getStatusCode()
+            $app->response(new ServerRequest('get', '/foo/2', []), new HttpFactory(), new HttpFactory())->getStatusCode()
         );
 
         $this->assertStringContainsStringIgnoringCase(
             '2',
             $app->response(
                 new ServerRequest('get', '/foo/2', []),
-                new HttpFactory()
+                new HttpFactory(), new HttpFactory()
             )->getBody()->getContents()
         );
     }
 
     private function disallowMethodMiddleware(
         string $method,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): MiddlewareInterface {
-        return new class($method, $factory) implements MiddlewareInterface {
+        return new class($method, $responseFactory, $streamFactory) implements MiddlewareInterface {
             public function __construct(
                 private string $method,
-                private ResponseFactoryInterface|StreamFactoryInterface $factory
+                private ResponseFactoryInterface $responseFactory,
+                private StreamFactoryInterface $streamFactory,
             ) {
             }
 
             public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
             {
                 if (strtolower($request->getMethod()) === strtolower($this->method)) {
-                    return $this->factory
+                    return $this->responseFactory
                         ->createResponse(405)
-                        ->withBody($this->factory->createStream(sprintf('%s method is not allowed', $this->method)));
+                        ->withBody($this->streamFactory->createStream(sprintf('%s method is not allowed', $this->method)));
                 }
 
                 return $handler->handle($request);
@@ -116,11 +118,11 @@ class ShieldTest extends TestCase
     }
 
     private function logPathMiddleware(
-        LoggerInterface $logger
+        LoggerInterface $logger,
     ): MiddlewareInterface {
         return new class($logger) implements MiddlewareInterface {
             public function __construct(
-                private LoggerInterface $logger
+                private LoggerInterface $logger,
             ) {
             }
 

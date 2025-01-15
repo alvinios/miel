@@ -7,7 +7,7 @@ namespace Alvinios\Miel\Format;
 class Low implements \Stringable
 {
     public function __construct(
-        private string|\Stringable $origin
+        private string|\Stringable $origin,
     ) {
     }
 

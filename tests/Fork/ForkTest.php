@@ -8,7 +8,7 @@ use Alvinios\Miel\Endpoint\Base;
 use Alvinios\Miel\Endpoint\Endpoint;
 use Alvinios\Miel\Fork\Accept;
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Request\WithRegex;
 use Alvinios\Miel\Response\Json as JsonResponse;
 use Alvinios\Miel\Response\Response;
@@ -30,7 +30,7 @@ class ForkTest extends TestCase
                     '/polymorphic/foo',
                     ['Accept' => ['text/html']]
                 ),
-                new HttpFactory()
+                new HttpFactory(), new HttpFactory()
             )->getBody()->getContents()
         );
     }
@@ -39,7 +39,7 @@ class ForkTest extends TestCase
     {
         $obj = json_decode($this->app()->response(
             new ServerRequest('GET', '/polymorphic/bar', ['Accept' => ['application/json']]),
-            new HttpFactory()
+            new HttpFactory(), new HttpFactory()
         )->getBody()->getContents(), true);
 
         $this->assertContains('bar', $obj);
@@ -47,13 +47,13 @@ class ForkTest extends TestCase
 
     private function app(): Endpoint
     {
-        return new Routes(
+        return new App(
             new Regex(
                 '/polymorphic/(?P<foo>[\w]+)',
                 new Accept('text/html', new Text('<html><head></head><body>Some HTML</body></html>')),
                 new Accept(
                     'application/json',
-                    new class() extends Base {
+                    new class extends Base {
                         public function act(ServerRequestInterface|WithRegex $request): Response
                         {
                             return new JsonResponse(['foo' => $request->regex()->group('foo')]);

@@ -14,20 +14,20 @@ class SeeOther implements Endpoint, Response
 {
     public function __construct(
         private string $location,
-        private string $text = ''
+        private string $text = '',
     ) {
     }
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $this->build($factory);
+        return $this->build($responseFactory);
     }
 
     public function build(
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $factory->createResponse(303)->withHeader('Location', $this->location);
+        return $responseFactory->createResponse(303)->withHeader('Location', $this->location);
     }
 }
