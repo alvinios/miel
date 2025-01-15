@@ -6,7 +6,7 @@ namespace Alvinios\Miel\Tests\Result;
 
 use Alvinios\Miel\Endpoint\Files;
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use GuzzleHttp\Psr7\HttpFactory;
 use Nyholm\Psr7\ServerRequest;
 use PHPUnit\Framework\TestCase;
@@ -17,7 +17,7 @@ class FilesTest extends TestCase
     {
         $this->assertStringContainsString(
             'User-agent',
-            (new Routes(
+            (new App(
                 new Regex('/robots\.txt', new Files(dirname(__DIR__).'/resources'))
             ))->response(
                 new ServerRequest('GET', '/robots.txt', []), new HttpFactory(), new HttpFactory()

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Alvinios\Miel\Fork\Append;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Tests\Books\Book\Api;
 use Alvinios\Miel\Tests\Books\Book\Book;
 use Alvinios\Miel\Tests\Books\Book\InMemoryBooks;
@@ -20,7 +20,7 @@ class ApiTest extends TestCase
 
     public function setUp(): void
     {
-        $this->app = new Routes(
+        $this->app = new App(
             new Append(
                 (new Api(
                     new InMemoryBooks([

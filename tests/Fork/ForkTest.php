@@ -8,7 +8,7 @@ use Alvinios\Miel\Endpoint\Base;
 use Alvinios\Miel\Endpoint\Endpoint;
 use Alvinios\Miel\Fork\Accept;
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Request\WithRegex;
 use Alvinios\Miel\Response\Json as JsonResponse;
 use Alvinios\Miel\Response\Response;
@@ -47,7 +47,7 @@ class ForkTest extends TestCase
 
     private function app(): Endpoint
     {
-        return new Routes(
+        return new App(
             new Regex(
                 '/polymorphic/(?P<foo>[\w]+)',
                 new Accept('text/html', new Text('<html><head></head><body>Some HTML</body></html>')),

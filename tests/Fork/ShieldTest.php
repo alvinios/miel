@@ -6,7 +6,7 @@ namespace Alvinios\Miel\Tests\Fork;
 
 use Alvinios\Miel\Endpoint\Base;
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Fork\Shield;
 use Alvinios\Miel\Request\WithRegex;
 use Alvinios\Miel\Response\Response;
@@ -28,7 +28,7 @@ class ShieldTest extends TestCase
 {
     public function testDisallowMethodMiddleware(): void
     {
-        $app = new Routes(
+        $app = new App(
             new Shield(
                 new Regex('/foo', new Text('Some content here...')),
                 $this->disallowMethodMiddleware('PATCH', new HttpFactory(), new HttpFactory())
@@ -48,7 +48,7 @@ class ShieldTest extends TestCase
 
     public function testNestedMiddlewares(): void
     {
-        $app = new Routes(
+        $app = new App(
             new Shield(
                 new Shield(
                     new Regex(

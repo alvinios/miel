@@ -8,7 +8,7 @@ use Alvinios\Miel\Endpoint\Base;
 use Alvinios\Miel\Fallback\Any;
 use Alvinios\Miel\Fallback\Fallback;
 use Alvinios\Miel\Fork\Regex;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Request\WithException;
 use Alvinios\Miel\Response\Response;
 use Alvinios\Miel\Response\Text;
@@ -23,7 +23,7 @@ class AnyTest extends TestCase
     public function testItWillDisplayFallbackText(): void
     {
         $response = (new Fallback(
-            new Routes(
+            new App(
                 new Regex(
                     '/foo',
                     new class extends Base {
@@ -46,7 +46,7 @@ class AnyTest extends TestCase
     public function testItCanDisplayExceptionMessage(): void
     {
         $response = (new Fallback(
-            new Routes(
+            new App(
                 new Regex(
                     '/foo',
                     new class extends Base {

@@ -6,7 +6,7 @@ namespace Alvinios\Miel\Tests\Endpoint;
 
 use Alvinios\Miel\Endpoint\BaseRegex;
 use Alvinios\Miel\Fork\Methods;
-use Alvinios\Miel\Fork\Routes;
+use Alvinios\Miel\App;
 use Alvinios\Miel\Request\WithRegex;
 use Alvinios\Miel\Response\Response;
 use Alvinios\Miel\Response\Text;
@@ -19,7 +19,7 @@ class BaseRegexTest extends TestCase
     public function testLogicExceptionIfNoRegexSupplied(): void
     {
         $this->expectException(\LogicException::class);
-        $app = new Routes(
+        $app = new App(
             new Methods(
                 ['get'],
                 new class extends BaseRegex {

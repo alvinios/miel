@@ -22,7 +22,7 @@ class Api
     }
 
     /**
-     * Books routes.
+     * Books App.
      */
     public function __invoke(): \Iterator
     {
