@@ -14,15 +14,15 @@ class NoContent implements Response, Endpoint
 {
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $this->build($factory);
+        return $this->build($responseFactory, $streamFactory);
     }
 
     public function build(
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $factory->createResponse(204)
+        return $responseFactory->createResponse(204)
           ->withStatus(204, 'No Content');
     }
 }

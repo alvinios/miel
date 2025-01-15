@@ -22,7 +22,7 @@ class HttpExceptionTest extends TestCase
             new Regex('/foo', new Text('Some information'))
         ))->response(
             new ServerRequest('GET', '/bar', []),
-            new HttpFactory()
+            new HttpFactory(), new HttpFactory()
         );
     }
 }

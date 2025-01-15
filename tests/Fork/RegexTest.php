@@ -22,7 +22,7 @@ class RegexTest extends TestCase
     {
         $response = (new Routes(
             new Regex('/', new Text('Some information'))
-        ))->response(new ServerRequest('GET', '/', []), new HttpFactory());
+        ))->response(new ServerRequest('GET', '/', []), new HttpFactory(), new HttpFactory());
 
         $this->assertStringContainsString(
             'Some information',
@@ -35,7 +35,7 @@ class RegexTest extends TestCase
         $response = (new Routes(
             new Regex(
                 '/foo/(?P<baz>[\w]+)/(?P<bar>[\w]+)',
-                new class() extends Base {
+                new class extends Base {
                     public function act(ServerRequestInterface|WithRegex $request): Response
                     {
                         return new TextResponse(
@@ -48,7 +48,7 @@ class RegexTest extends TestCase
                     }
                 }
             )
-        ))->response(new ServerRequest('GET', '/foo/first/second'), new HttpFactory());
+        ))->response(new ServerRequest('GET', '/foo/first/second'), new HttpFactory(), new HttpFactory());
 
         $this->assertStringContainsString('second - first', $response->getBody()->getContents());
     }

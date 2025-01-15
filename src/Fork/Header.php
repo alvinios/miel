@@ -17,13 +17,13 @@ class Header implements Fork
     public function __construct(
         private string $name,
         private string $value,
-        Fork ...$forks
+        Fork ...$forks,
     ) {
         $this->forks = $forks;
     }
 
     public function route(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): Endpoint|Optional {
         $headerLine = $request->getHeaderLine($this->name);
 

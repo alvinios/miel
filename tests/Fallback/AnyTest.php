@@ -26,7 +26,7 @@ class AnyTest extends TestCase
             new Routes(
                 new Regex(
                     '/foo',
-                    new class() extends Base {
+                    new class extends Base {
                         public function act(ServerRequestInterface $request): Response
                         {
                             throw new \RuntimeException('there was an error');
@@ -37,7 +37,7 @@ class AnyTest extends TestCase
             new Any(new Text('Athens'))
         ))->response(
             new ServerRequest('GET', '/foo', []),
-            new HttpFactory()
+            new HttpFactory(), new HttpFactory()
         );
 
         $this->assertStringContainsString('Athens', $response->getBody()->getContents());
@@ -49,7 +49,7 @@ class AnyTest extends TestCase
             new Routes(
                 new Regex(
                     '/foo',
-                    new class() extends Base {
+                    new class extends Base {
                         public function act(ServerRequestInterface $request): Response
                         {
                             throw new \RuntimeException('Cool exception');
@@ -58,7 +58,7 @@ class AnyTest extends TestCase
                 )
             ),
             new Any(
-                new class() extends Base {
+                new class extends Base {
                     public function act(ServerRequestInterface|WithException $request): Response
                     {
                         return new TextResponse($request->exception()->getMessage());
@@ -67,7 +67,7 @@ class AnyTest extends TestCase
             )
         ))->response(
             new ServerRequest('GET', '/foo', []),
-            new HttpFactory()
+            new HttpFactory(), new HttpFactory()
         );
 
         $this->assertStringContainsString('Cool exception', $response->getBody()->getContents());

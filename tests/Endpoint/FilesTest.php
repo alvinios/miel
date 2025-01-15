@@ -20,7 +20,7 @@ class FilesTest extends TestCase
             (new Routes(
                 new Regex('/robots\.txt', new Files(dirname(__DIR__).'/resources'))
             ))->response(
-                new ServerRequest('GET', '/robots.txt', []), new HttpFactory()
+                new ServerRequest('GET', '/robots.txt', []), new HttpFactory(), new HttpFactory()
             )->getBody()->getContents()
         );
     }

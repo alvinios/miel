@@ -15,7 +15,7 @@ class Cookie implements Decorator
     public function __construct(
         private string $name,
         private string $value,
-        OptionInterface ...$options
+        OptionInterface ...$options,
     ) {
         $this->options = $options;
     }

@@ -7,7 +7,7 @@ namespace Alvinios\Miel\Http\Message\Headers\Cookie;
 class Domain implements OptionInterface
 {
     public function __construct(
-        private string $domain
+        private string $domain,
     ) {
     }
 

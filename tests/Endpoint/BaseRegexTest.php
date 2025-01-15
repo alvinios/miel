@@ -22,7 +22,7 @@ class BaseRegexTest extends TestCase
         $app = new Routes(
             new Methods(
                 ['get'],
-                new class() extends BaseRegex {
+                new class extends BaseRegex {
                     public function act(WithRegex $request): Response
                     {
                         return new Text(
@@ -36,6 +36,6 @@ class BaseRegexTest extends TestCase
             )
         );
 
-        $response = $app->response(new ServerRequest('GET', '/foo', []), new HttpFactory());
+        $response = $app->response(new ServerRequest('GET', '/foo', []), new HttpFactory(), new HttpFactory());
     }
 }

@@ -42,7 +42,7 @@ class ApiTest extends TestCase
     {
         $this->assertStringContainsString(
             'War and peace',
-            $this->app->response(new ServerRequest('GET', '/api/books'), new HttpFactory())->getBody()->getContents()
+            $this->app->response(new ServerRequest('GET', '/api/books'), new HttpFactory(), new HttpFactory())->getBody()->getContents()
         );
     }
 
@@ -53,7 +53,7 @@ class ApiTest extends TestCase
     {
         $this->assertContains(
             'application/json',
-            $this->app->response(new ServerRequest('GET', '/api/books'), new HttpFactory())->getHeader('Content-type')
+            $this->app->response(new ServerRequest('GET', '/api/books'), new HttpFactory(), new HttpFactory())->getHeader('Content-type')
         );
     }
 
@@ -71,7 +71,7 @@ class ApiTest extends TestCase
                     ['content-type' => 'application/json'],
                     '{"name":"The Odyssey","author":"Homer", "id" : "4"}'
                 ),
-                new HttpFactory()
+                new HttpFactory(), new HttpFactory()
             )->getBody()->getContents()
         );
     }
@@ -89,7 +89,7 @@ class ApiTest extends TestCase
                     ['content-type' => 'application/x-www-form-urlencoded'],
                     http_build_query($data, '', '&', PHP_QUERY_RFC3986)
                 ))->withParsedBody($data),
-                new HttpFactory()
+                new HttpFactory(), new HttpFactory()
             )->getBody()->getContents()
         );
     }
@@ -100,7 +100,7 @@ class ApiTest extends TestCase
     public function testThirdBookAuthor(): void
     {
         $obj = json_decode(
-            $this->app->response(new ServerRequest('GET', '/api/books/3'), new HttpFactory())->getBody()->getContents()
+            $this->app->response(new ServerRequest('GET', '/api/books/3'), new HttpFactory(), new HttpFactory())->getBody()->getContents()
         );
 
         $this->assertSame('Stendhal', $obj->author);

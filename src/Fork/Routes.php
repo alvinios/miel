@@ -21,13 +21,13 @@ class Routes implements Fork, Endpoint
     private array $forks;
 
     public function __construct(
-        Fork ...$forks
+        Fork ...$forks,
     ) {
         $this->forks = $forks;
     }
 
     public function route(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): Endpoint|Optional {
         foreach ($this->forks as $route) {
             $solution = $route->route($request);
@@ -42,12 +42,13 @@ class Routes implements Fork, Endpoint
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         $endpoint = $this->route($request);
 
         if ($endpoint->has()) {
-            return $endpoint->response($request, $factory);
+            return $endpoint->response($request, $responseFactory, $streamFactory);
         }
 
         throw new HttpException('Sorry, no route matches this request', 404);

@@ -8,7 +8,7 @@ class ContentType extends Header
 {
     public function __construct(
         private string $type,
-        Fork ...$forks
+        Fork ...$forks,
     ) {
         parent::__construct('Content-type', $type, ...$forks);
     }

@@ -20,13 +20,13 @@ class Shield implements Fork
 
     public function __construct(
         private readonly Fork $origin,
-        MiddlewareInterface ...$middlewares
+        MiddlewareInterface ...$middlewares,
     ) {
         $this->middlewares = $middlewares;
     }
 
     public function route(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): Endpoint|Optional {
         $endpoint = $this->origin->route($request);
 

@@ -12,7 +12,7 @@ use Alvinios\Miel\Request\Regex\Regex as RegexMatcher;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * matching request path with a regex pattern
+ * matching request path with a regex pattern.
  */
 class Regex implements Fork
 {
@@ -20,13 +20,13 @@ class Regex implements Fork
 
     public function __construct(
         private string $pattern,
-        Fork ...$forks
+        Fork ...$forks,
     ) {
         $this->forks = $forks;
     }
 
     public function route(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): Endpoint|Optional {
         $regex = new RegexMatcher(sprintf('@%s@i', $this->pattern), $request->getUri()->getPath());
 

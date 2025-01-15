@@ -9,7 +9,7 @@ use Psr\Http\Message\ResponseInterface;
 class Type implements Decorator
 {
     public function __construct(
-        private readonly string $type
+        private readonly string $type,
     ) {
     }
 

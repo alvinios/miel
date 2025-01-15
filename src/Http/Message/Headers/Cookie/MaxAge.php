@@ -7,7 +7,7 @@ namespace Alvinios\Miel\Http\Message\Headers\Cookie;
 class MaxAge implements OptionInterface
 {
     public function __construct(
-        private int $seconds
+        private int $seconds,
     ) {
     }
 

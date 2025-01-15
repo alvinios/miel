@@ -9,18 +9,18 @@ class Book implements \JsonSerializable
     public function __construct(
         private string $id,
         private string $name,
-        private string $author
+        private string $author,
     ) {
     }
 
     public static function fromJson(
-        string $json
+        string $json,
     ): self {
         return self::fromStdClass(json_decode($json));
     }
 
     public static function fromStdClass(
-        \stdClass $obj
+        \stdClass $obj,
     ): self {
         return new self(id: $obj->id, name : $obj->name, author: $obj->author);
     }

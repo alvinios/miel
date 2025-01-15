@@ -15,7 +15,7 @@ use Psr\Http\Message\StreamFactoryInterface;
 abstract class Base implements Endpoint, Fork, Response, Optional
 {
     public function route(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): Endpoint|Optional {
         return $this;
     }
@@ -27,12 +27,12 @@ abstract class Base implements Endpoint, Fork, Response, Optional
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return $this->build($factory);
+        return $this->build($responseFactory, $streamFactory);
     }
 
     abstract public function build(
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
     ): ResponseInterface;
 }

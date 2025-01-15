@@ -4,7 +4,7 @@ use Alvinios\Miel\Http\Emit;
 use Alvinios\Miel\Tests\Books\Book\FilesystemBooks;
 use Alvinios\Miel\Endpoint\{Json, Text, Base, Endpoint};
 use Alvinios\Miel\In\In;
-use Alvinios\Miel\Fork\{Fork, Routes, Fork};
+use Alvinios\Miel\Fork\{Fork, Routes};
 use Alvinios\Miel\Fork\Match\{Regex, QueryParam, Methods, Parsed};
 use Alvinios\Miel\Tests\Books\App;
 use GuzzleHttp\Psr7\{HttpFactory, ServerRequest};
@@ -28,5 +28,5 @@ Debug::enable();
             []
         ),
         new FilesystemBooks('../resources/import/books.json')
-    ))->response(ServerRequest::fromGlobals(), new HttpFactory())
+    ))->response(ServerRequest::fromGlobals(), new HttpFactory(), new HttpFactory())
 );

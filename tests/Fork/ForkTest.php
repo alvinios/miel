@@ -30,7 +30,7 @@ class ForkTest extends TestCase
                     '/polymorphic/foo',
                     ['Accept' => ['text/html']]
                 ),
-                new HttpFactory()
+                new HttpFactory(), new HttpFactory()
             )->getBody()->getContents()
         );
     }
@@ -39,7 +39,7 @@ class ForkTest extends TestCase
     {
         $obj = json_decode($this->app()->response(
             new ServerRequest('GET', '/polymorphic/bar', ['Accept' => ['application/json']]),
-            new HttpFactory()
+            new HttpFactory(), new HttpFactory()
         )->getBody()->getContents(), true);
 
         $this->assertContains('bar', $obj);
@@ -53,7 +53,7 @@ class ForkTest extends TestCase
                 new Accept('text/html', new Text('<html><head></head><body>Some HTML</body></html>')),
                 new Accept(
                     'application/json',
-                    new class() extends Base {
+                    new class extends Base {
                         public function act(ServerRequestInterface|WithRegex $request): Response
                         {
                             return new JsonResponse(['foo' => $request->regex()->group('foo')]);

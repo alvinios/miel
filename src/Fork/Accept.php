@@ -8,7 +8,7 @@ class Accept extends Header
 {
     public function __construct(
         private string $accept,
-        Fork ...$forks
+        Fork ...$forks,
     ) {
         parent::__construct('Accept', $accept, ...$forks);
     }

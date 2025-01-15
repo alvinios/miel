@@ -9,7 +9,7 @@ use Alvinios\Miel\Format\Low;
 class HeaderName implements \Stringable
 {
     public function __construct(
-        private string $value
+        private string $value,
     ) {
         if (1 !== \preg_match("@^[!#$%&'*+.^_`|~0-9A-Za-z-]+$@D", $value)) {
             throw new \InvalidArgumentException('Header name must be an RFC 7230 compatible string');

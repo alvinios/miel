@@ -15,13 +15,13 @@ class Methods implements Fork
 
     public function __construct(
         private array $methods,
-        Fork ...$forks
+        Fork ...$forks,
     ) {
         $this->forks = $forks;
     }
 
     public function route(
-        ServerRequestInterface $request
+        ServerRequestInterface $request,
     ): Endpoint|Optional {
         if (in_array(
             strtolower($request->getMethod()),

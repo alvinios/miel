@@ -9,7 +9,7 @@ use Alvinios\Miel\Http\HttpException;
 class InMemoryBooks implements Books
 {
     public function __construct(
-        private array $books
+        private array $books,
     ) {
     }
 

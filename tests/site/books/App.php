@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Alvinios\Miel\Tests\Books;
 
 use Alvinios\Miel\Endpoint\Endpoint;
-use Alvinios\Miel\Endpoint\SeeOther;
 use Alvinios\Miel\Endpoint\Wrap;
 use Alvinios\Miel\Fallback\Any;
 use Alvinios\Miel\Fallback\Fallback;
@@ -32,13 +31,14 @@ class App implements Endpoint
      */
     public function __construct(
         private Environment $twig,
-        private Books $books
+        private Books $books,
     ) {
     }
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface|StreamFactoryInterface $factory
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return (new Fallback(
             new Routes(
@@ -58,7 +58,7 @@ class App implements Endpoint
                 new Text('An error has occured'),
                 new Status(500)
             ))
-        ))->response($request, $factory);
+        ))->response($request, $responseFactory, $streamFactory);
     }
 
     /**
@@ -75,7 +75,5 @@ class App implements Endpoint
                 new Cookie('foo', 'yes')
             ),
         );
-
-        yield new Regex('/bar', new SeeOther('/'));
     }
 }

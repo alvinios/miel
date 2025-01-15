@@ -9,7 +9,7 @@ use Alvinios\Miel\Http\Exception\HttpException;
 class FilesystemBooks implements Books
 {
     public function __construct(
-        private string $filename
+        private string $filename,
     ) {
     }
 

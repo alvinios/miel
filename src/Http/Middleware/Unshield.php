@@ -18,8 +18,9 @@ class Unshield implements RequestHandlerInterface
 
     public function __construct(
         private Endpoint $endpoint,
-        private ResponseFactoryInterface|StreamFactoryInterface $factory,
-        MiddlewareInterface ...$middlewares
+        private ResponseFactoryInterface $responseFactory,
+        private StreamFactoryInterface $streamFactory,
+        MiddlewareInterface ...$middlewares,
     ) {
         $this->middlewares = $middlewares;
     }
@@ -27,12 +28,12 @@ class Unshield implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (0 === count($this->middlewares)) {
-            return $this->endpoint->response($request, $this->factory);
+            return $this->endpoint->response($request, $this->responseFactory, $this->streamFactory);
         }
 
         return $this->middlewares[0]->process(
             $request,
-            new self($this->endpoint, $this->factory, ...array_slice($this->middlewares, 1))
+            new self($this->endpoint, $this->responseFactory, $this->streamFactory, ...array_slice($this->middlewares, 1))
         );
     }
 }
