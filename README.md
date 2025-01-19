@@ -135,7 +135,7 @@ _Shields_ can be nested.
 
 ### Single Middleware
 
-``php
+```php
 use Alvinios\Miel\Fork\Shield;
 use Psr\Http\Server\MiddlewareInterface;
 
