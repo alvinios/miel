@@ -7,6 +7,7 @@ namespace Alvinios\Miel\Tests\Fork;
 use Alvinios\Miel\Endpoint\Base;
 use Alvinios\Miel\Fork\Regex;
 use Alvinios\Miel\App;
+use Alvinios\Miel\Fork\Shields;
 use Alvinios\Miel\Fork\Shield;
 use Alvinios\Miel\Request\WithRegex;
 use Alvinios\Miel\Response\Response;
@@ -30,8 +31,8 @@ class ShieldTest extends TestCase
     {
         $app = new App(
             new Shield(
-                new Regex('/foo', new Text('Some content here...')),
-                $this->disallowMethodMiddleware('PATCH', new HttpFactory(), new HttpFactory())
+                $this->disallowMethodMiddleware('PATCH', new HttpFactory(), new HttpFactory()),
+                new Regex('/foo', new Text('Some content here...'))
             )
         );
 
@@ -49,8 +50,9 @@ class ShieldTest extends TestCase
     public function testNestedMiddlewares(): void
     {
         $app = new App(
-            new Shield(
+            new Shields(
                 new Shield(
+                    $this->disallowMethodMiddleware('PATCH', new HttpFactory(), new HttpFactory()),
                     new Regex(
                         '/foo/(?P<id>[\d]+)',
                         new class extends Base {
@@ -59,8 +61,7 @@ class ShieldTest extends TestCase
                                 return new TextResponse(sprintf('Id is equal to %s', $request->regex()->group('id')));
                             }
                         }
-                    ),
-                    $this->disallowMethodMiddleware('PATCH', new HttpFactory(), new HttpFactory())
+                    )
                 ),
                 $this->disallowMethodMiddleware('POST', new HttpFactory(), new HttpFactory()),
                 $this->logPathMiddleware(new NullLogger())

@@ -1,26 +1,23 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Alvinios\Miel\Fork;
 
 use Alvinios\Miel\Endpoint\Endpoint;
-use Alvinios\Miel\Endpoint\Shield as ShieldEndpoint;
+use Alvinios\Miel\Endpoint\Shields as ShieldsEndpoint;
 use Alvinios\Miel\Logic\HasNot;
 use Alvinios\Miel\Logic\Optional;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-/**
- * Decorates Fork with middlewares.
- */
-class Shield implements Fork
+class Shields implements Fork
 {
+    private array $middlewares;
 
     public function __construct(
-        private readonly MiddlewareInterface $middleware,
-        private readonly Fork $origin
+        private readonly Fork $origin,
+        MiddlewareInterface ...$middlewares,
     ) {
+        $this->middlewares = $middlewares;
     }
 
     public function route(
@@ -29,7 +26,7 @@ class Shield implements Fork
         $endpoint = $this->origin->route($request);
 
         if ($endpoint->has()) {
-            return new ShieldEndpoint($this->middleware, $endpoint);
+            return new ShieldsEndpoint($endpoint, ...$this->middlewares);
         }
 
         return new HasNot();

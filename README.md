@@ -27,14 +27,14 @@ composer require ..
 Create this `index.php` file:
 
 ```php
-
+use Alvinios\Miel\App;
 use Alvinios\Miel\Http\Emit;
 use Alvinios\Miel\Response\Text;
-use Alvinios\Miel\Fork\{Regex, Routes};
-use GuzzleHttp\Psr7\{HttpFactory,ServerRequest};
+use Alvinios\Miel\Fork\Regex;
+use GuzzleHttp\Psr7\{HttpFactory, ServerRequest};
 
 (new Emit())(
-    (new Routes(
+    (new App(
         new Regex('/', new Text('Hello world!'))
     ))->response(ServerRequest::fromGlobals(), new HttpFactory(), new HttpFactory())
 );
@@ -48,16 +48,17 @@ php -S localhost:8000
 ## A Bigger Example
 
 ```php
+use Alvinios\Miel\App;
 use Alvinios\Miel\Http\Emit;
 use Alvinios\Miel\Endpoint\Base;
 use Alvinios\Miel\Request\WithRegex;
 use Alvinios\Miel\Response\{Json, Response, Text, Twig}; 
-use Alvinios\Miel\Fork\{Routes, Regex, Methods};
+use Alvinios\Miel\Fork\{Regex, Methods};
 use GuzzleHttp\Psr7\{HttpFactory, ServerRequest};
 use Psr\Http\Message\ServerRequestInterface;
 
 (new Emit())(
-  (new Routes(
+  (new App(
         new Regex('/', new Text('Hello world!')),
         new Regex(
             '/users/(?P<id>[\d]+)',
@@ -92,10 +93,11 @@ use Psr\Http\Message\ServerRequestInterface;
 Routes can be composed as variadic argument of _Routes_ or with [Generators](https://www.php.net/manual/en/language.generators.overview.php) using _Append_ wrapper.
 
 ```php
+use Alvinios\Miel\App;
 use Alvinios\Miel\Response\{Text, Twig}; 
-use Alvinios\Miel\Fork\{Append, Routes, Regex};
+use Alvinios\Miel\Fork\{Append, Regex};
 
- new Routes(
+ new App(
      new Append(
          call_user_func(function() : \Iterator {
              yield new Regex('^(/|/home)$', new Twig($this->twig, 'index.html.twig', []));
@@ -113,12 +115,13 @@ use Alvinios\Miel\Fork\{Append, Routes, Regex};
 You can shield a route/routes behind [PSR-15](https://www.php-fig.org/psr/psr-15/) Middleware(s).
 This is how it can be done:
 
+### Multiple Middlewares
+
 ```php
-use Alvinios\Miel\Response\Text; 
-use Alvinios\Miel\Fork\{Fork, Shield};
+use Alvinios\Miel\Fork\{Regex, Shields};
 use Psr\Http\Server\MiddlewareInterface;
 
-new Shield(
+new Shields(
     new Regex('/foo', new Text('Behind middleware')),
     new class() implements MiddlewareInterface {
        ...
@@ -130,8 +133,22 @@ new Shield(
 ```
 _Shields_ can be nested.
 
+### Single Middleware
+
+``php
+use Alvinios\Miel\Fork\Shield;
+use Psr\Http\Server\MiddlewareInterface;
+
+new Shield(
+    new class() implements MiddlewareInterface {
+        ...
+    },
+    new Regex('/foo', new Text('Behind middleware'))
+)
+```
+
 ## Note
- Today it is in a conceptual state and has not been tested in production environment.
+ Today the project is in a conceptual state and has not been tested in production environment.
 
 <!-- LICENSE -->
 ## License

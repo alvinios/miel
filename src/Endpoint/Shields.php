@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Alvinios\Miel\Endpoint;
 
 use Alvinios\Miel\Http\Middleware\Unshield;
@@ -11,13 +9,15 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
-class Shield extends Fork
+class Shields extends Fork implements Endpoint
 {
-    public function __construct(
-        private readonly MiddlewareInterface $middleware,
-        private readonly Endpoint $endpoint,
+    private array $middlewares;
 
+    public function __construct(
+        private readonly Endpoint $endpoint,
+        MiddlewareInterface ...$middlewares,
     ) {
+        $this->middlewares = $middlewares;
     }
 
     public function response(
@@ -25,6 +25,6 @@ class Shield extends Fork
         ResponseFactoryInterface $responseFactory,
         StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
-        return (new Unshield($this->endpoint, $responseFactory, $streamFactory, $this->middleware))->handle($request);
+        return (new Unshield($this->endpoint, $responseFactory, $streamFactory, ...$this->middlewares))->handle($request);
     }
 }
