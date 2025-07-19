@@ -16,7 +16,8 @@ class File implements Response
     }
 
     public function build(
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         if (!is_file($this->file)) {
             throw new HttpException(sprintf('No such file %s', $this->file), 404);

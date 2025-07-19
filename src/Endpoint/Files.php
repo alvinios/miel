@@ -19,7 +19,8 @@ class Files extends Fork
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         if (!is_dir($this->directory)) {
             throw new \InvalidArgumentException(sprintf('%s is not a valid path', $this->directory));

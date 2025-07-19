@@ -7,7 +7,8 @@
         "symfony/error-handler": "6.0.x-dev",
         "monolog/monolog": "2.x-dev",
         "nyholm/psr7": "^1.8",
-        "friendsofphp/php-cs-fixer": "dev-master"
+        "friendsofphp/php-cs-fixer": "dev-master",
+        "squizlabs/php_codesniffer": "4.x-dev"
     },
     "license": "MIT",
     "autoload": {
@@ -26,6 +27,12 @@
         "psr/http-server-middleware": "^1.0",
         "psr/log": "^3",
         "guzzlehttp/psr7": "^2.6"
+    },
+    "scripts": {
+        "php-cs-fixer": "php-cs-fixer --config=./.php-cs-fixer.dist.php",
+        "unit": "./vendor/bin/phpunit tests",
+        "phpcs": "phpcs --standard=phpcs.xml src/",
+        "phpcbf": "phpcbf --standard=phpcs.xml src/"
     },
     "minimum-stability": "dev",
     "version": "1.0.0"

@@ -22,11 +22,13 @@ class Regex extends Fork
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return $this->origin->response(
             new WithRegex($request->withAttribute(RegexInterface::class, $this->regex)),
-            $responseFactory, $streamFactory
+            $responseFactory,
+            $streamFactory
         );
     }
 }

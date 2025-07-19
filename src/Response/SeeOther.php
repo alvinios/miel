@@ -20,13 +20,15 @@ class SeeOther implements Endpoint, Response
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return $this->build($responseFactory);
     }
 
     public function build(
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return $responseFactory->createResponse(303)->withHeader('Location', $this->location);
     }

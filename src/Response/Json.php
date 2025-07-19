@@ -16,7 +16,8 @@ class Json extends Base implements Response
     }
 
     public function build(
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return $responseFactory->createResponse(200)
           ->withBody($streamFactory->createStream(json_encode($this->content)))

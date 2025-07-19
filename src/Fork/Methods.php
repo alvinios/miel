@@ -23,10 +23,12 @@ class Methods implements Fork
     public function route(
         ServerRequestInterface $request,
     ): Endpoint|Optional {
-        if (in_array(
-            strtolower($request->getMethod()),
-            array_map(fn (string $method) => strtolower($method), $this->methods)
-        )) {
+        if (
+            in_array(
+                strtolower($request->getMethod()),
+                array_map(fn (string $method) => strtolower($method), $this->methods)
+            )
+        ) {
             return (new Routes(...$this->forks))->route($request);
         }
 

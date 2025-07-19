@@ -16,7 +16,8 @@ class Resource extends Base
     }
 
     public function build(
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         if (is_resource($this->resource)) {
             throw new \InvalidArgumentException('Not a resource');

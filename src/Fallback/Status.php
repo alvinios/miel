@@ -25,7 +25,8 @@ class Status implements FallbackInterface
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return $this->endpoint->response($request, $responseFactory, $streamFactory);
     }
