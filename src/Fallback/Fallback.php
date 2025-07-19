@@ -24,7 +24,8 @@ class Fallback implements Endpoint
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         try {
             return $this->endpoint->response($request, $responseFactory, $streamFactory);
@@ -33,7 +34,8 @@ class Fallback implements Endpoint
                 if ($fallback->supports($ex)) {
                     return $fallback->response(
                         new WithException($request->withAttribute(\Exception::class, $ex)),
-                        $responseFactory, $streamFactory
+                        $responseFactory,
+                        $streamFactory
                     );
                 }
             }

@@ -22,7 +22,8 @@ class Wrap extends Fork
 
     public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface {
         return (new Decorators($this->decorators))->response($this->endpoint->response($request, $responseFactory, $streamFactory));
     }

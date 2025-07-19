@@ -26,6 +26,7 @@ abstract class Fork implements Endpoint, ForkInterface, Optional
 
     abstract public function response(
         ServerRequestInterface $request,
-        ResponseFactoryInterface $responseFactory, StreamFactoryInterface $streamFactory,
+        ResponseFactoryInterface $responseFactory,
+        StreamFactoryInterface $streamFactory,
     ): ResponseInterface;
 }

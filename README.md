@@ -19,7 +19,7 @@ For being operational it requires [PSR-7](https://www.php-fig.org/psr/psr-7/) an
 ## Getting Started
 
 ```
-composer require ..
+composer require alvinios/miel
 ```
 
 ## Quick Start
